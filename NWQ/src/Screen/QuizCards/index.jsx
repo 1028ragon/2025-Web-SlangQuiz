@@ -9,7 +9,7 @@ export default function QuizCard({ quiz, onAnswer }) {
   const navigate = useNavigate();
 
   // quiz가 없거나 메서드가 없을 때 대비
-  if (
+   if (
     !quiz ||
     typeof quiz.getText !== 'function' ||
     typeof quiz.getImageUrl !== 'function' ||
@@ -23,7 +23,7 @@ export default function QuizCard({ quiz, onAnswer }) {
         </div>
       </div>
     );
-  }
+  } 
 
   return (
     <div className="quiz-container">
