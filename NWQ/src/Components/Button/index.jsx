@@ -11,7 +11,7 @@ function StartBtn(){
 }
 function SettingBtn(){
     return(
-        <button className="main-button setting-button" >설정</button>
+        <button className="main-button setting-btn" >설정</button>
     )
 }
 export {SettingBtn, StartBtn, ContactBtn};

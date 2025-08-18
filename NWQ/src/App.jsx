@@ -10,6 +10,7 @@ import QuizCard from './Screen/QuizCards/index'; // 파일 경로 정확히
 import quizData from './data/quizData';            // mock 데이터
 import QuizDTO from './api/QuizDTO';
 import HelpScreen from './Screen/QuizCards/HelpScreen';
+import Scorescreen from './Screen/scorescreen';
 function App() {
   const quizzes = useMemo(
     () => quizData.map(q => new QuizDTO(q.quiz_id, q.quiz_text, q.image_url, q.options)),
@@ -33,6 +34,7 @@ function App() {
         path="/start/quiz"
         element={<QuizCard quiz={quizzes[idx]} onAnswer={handleAnswer} />}
       />
+      <Route path='/ScoreScreen ' element={<Scorescreen/>}/>
       <Route path="*" element={<NotFoundPage/>}/>
     </Routes>
   );
