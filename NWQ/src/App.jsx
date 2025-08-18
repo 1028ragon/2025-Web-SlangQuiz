@@ -9,7 +9,7 @@ import SetNickName from './Screen/SetNickName';
 import QuizCard from './Screen/QuizCards/index'; // 파일 경로 정확히
 import quizData from './data/quizData';            // mock 데이터
 import QuizDTO from './api/QuizDTO';
-
+import HelpScreen from './Screen/QuizCards/HelpScreen';
 function App() {
   const quizzes = useMemo(
     () => quizData.map(q => new QuizDTO(q.quiz_id, q.quiz_text, q.image_url, q.options)),
@@ -28,6 +28,7 @@ function App() {
       <Route path="/settings" element={<SettingsPage/>}/>
       <Route path="/requests" element={<InquiryPage/>}/>
       <Route path="/start" element={<SetNickName/>}/>
+      <Route path="/help" element={<HelpScreen/>}/>
       <Route
         path="/start/quiz"
         element={<QuizCard quiz={quizzes[idx]} onAnswer={handleAnswer} />}
