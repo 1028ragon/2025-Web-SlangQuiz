@@ -1,0 +1,29 @@
+.NotFoundPage-screen {
+    width: 100vw; /* 뷰포트 너비의 100% */
+    height: 100vh; /* 뷰포트 높이의 100% */
+    overflow: hidden; /* 내용이 넘치면 숨김 */
+
+    background-image: url('/svg/BackGrundPage.svg');
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-position: center bottom; /* 별 패턴이 아래쪽에 많으므로 bottom으로 조정 가능 */
+
+  /* 모든 콘텐츠를 화면 중앙에 배치하기 위한 Flexbox */
+    display: flex;
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center;     /* 세로 중앙 정렬 */
+}
+
+/*반응형 설정*/
+@media (max-width: 768px) {
+    .NotFoundSVG{
+        max-width: 250px; /* 휴대폰에서 타이틀 크기 조정 */
+    }
+}
+
+@media (max-width: 480px) {
+    .NotFoundSVG{
+        max-width: 200px; /* 더 작은 휴대폰에서 타이틀 크기 조정 */
+    }
+
+}

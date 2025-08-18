@@ -1,0 +1,99 @@
+html, body, #root {
+  width: 100vw; /* 뷰포트 너비의 100% */
+  height: 100vh; /* 뷰포트 높이의 100% */
+  overflow: hidden; /* 내용이 넘치면 숨김 */
+
+  background-image: url('/svg/BackGrundPage.svg');
+  background-size: cover; 
+  background-repeat: no-repeat;
+  background-position: center bottom; /* 별 패턴이 아래쪽에 많으므로 bottom으로 조정 가능 */
+
+  /* 모든 콘텐츠를 화면 중앙에 배치하기 위한 Flexbox */
+  display: flex;
+  justify-content: center; /* 가로 중앙 정렬 */
+  align-items: center;     /* 세로 중앙 정렬 */
+}
+/* iPhone 가로 최대 375px, 세로 100vh */
+.inquiry-wrapper {
+  width: 100vh;
+  max-width: 375px;
+  height: 100vh;
+  margin: auto auto;
+  /* background-color: #E1F7FF; */
+  padding: 16px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.inquiry-card {
+  position: relative;
+  width: 100%;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 24px 16px;
+  box-sizing: border-box;
+}
+
+.back-button {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.inquiry-title {
+  margin: 0;
+  margin-top: 8px; /* 백버튼 아래 여유 */
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.inquiry-text {
+  margin-top: 60px;
+  font-size: 16px;
+  line-height: 1.5;
+  text-align: center;
+  white-space: pre-wrap;
+}
+
+.inquiry-email {
+  display: inline-block;
+  margin: 8px 0;
+  font-size: 18px;
+  font-weight: 700;
+  text-decoration: none;
+  color: black;
+}
+
+/* InquiryPage.css 끝에 추가 */
+@media (max-width: 768px) {
+  .inquiry-wrapper {
+    width: 95%;
+    padding: 15px;
+  }
+  .inquiry-card {
+    max-width: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .inquiry-wrapper {
+    width: 90%;
+    padding: 10px;
+  }
+  .inquiry-card {
+    max-width: 200px;
+  }
+  .inquiry-email {
+    font-size: 90%;
+    font-weight: 700;
+  }
+
+}

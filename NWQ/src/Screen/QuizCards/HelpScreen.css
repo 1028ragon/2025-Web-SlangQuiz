@@ -1,0 +1,144 @@
+/* 전체 도움말 화면 컨테이너 */
+.help-container {
+  min-height: 100vh;
+  background-color: #6BC2DA;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Noto Sans KR', sans-serif;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+/* 카드 스타일 (도움말 박스) */
+.help-card {
+  width: 100%;
+  max-width: 900px; /* 💡 PC에서도 넉넉하게 */
+  background-color: white;
+  border-radius: 15px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-sizing: border-box;
+}
+
+/* "도움말" 제목 텍스트 */
+.help-title {
+  font-size: 28px;
+  font-weight: 900;
+  margin-bottom: 16px;
+}
+
+/* 퀴즈 이미지 스타일 */
+.help-image {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 20px;
+  margin: 12px auto;
+  display: block;
+}
+
+/* "의미", "예시" 섹션 제목 */
+.section-title {
+  font-size: 22px;
+  font-weight: 800;
+  margin-top: 20px;
+}
+
+/* 의미 및 예시 내용 박스 */
+.section-box {
+  background-color: #D5E3F0;
+  padding: 16px;
+  margin-top: 6px;
+  border-radius: 20px;
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* "뒤로가기" 버튼 스타일 */
+.btn-back {
+  margin-top: 24px;
+  background-color: #70B7F1;
+  padding: 12px 24px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  color: black;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  transition: all 0.1s ease-in-out;
+}
+
+.btn-back:active {
+  transform: scale(0.96);
+  box-shadow: none;
+}
+
+/* ----------- 태블릿 이하 ----------- */
+@media (max-width: 768px) {
+  .help-card {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .help-title {
+    font-size: 22px;
+  }
+
+  .help-image {
+    width: 140px;
+    height: 140px;
+    border-radius: 16px;
+  }
+
+  .section-title {
+    font-size: 18px;
+    margin-top: 16px;
+  }
+
+  .section-box {
+    font-size: 15px;
+    padding: 12px;
+  }
+
+  .btn-back {
+    font-size: 16px;
+    padding: 10px 20px;
+  }
+}
+
+/* ----------- 모바일 이하 ----------- */
+@media (max-width: 480px) {
+  .help-card {
+    width: 100%;
+    padding: 16px;
+  }
+
+  .help-title {
+    font-size: 20px;
+  }
+
+  .help-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 14px;
+  }
+
+  .section-title {
+    font-size: 16px;
+  }
+
+  .section-box {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .btn-back {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+}

@@ -1,4 +1,14 @@
-body{
+body{ /*바디에 margin and padding 0 주고 텍스트 드레그 방지*/
     margin: 0;
     padding: 0;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none
+}
+img { /*이미지 드레그 방지*/
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
 }
