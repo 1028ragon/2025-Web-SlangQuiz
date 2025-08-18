@@ -1,5 +1,5 @@
 // src/data/quizData.js
-import QuizDTO from '../NWQ/src/api/QuizDTO';
+import QuizDTO from '../api/QuizDTO';
 
 const rawQuizData = [
   {

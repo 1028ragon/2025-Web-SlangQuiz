@@ -1,7 +1,7 @@
 /* 전체 퀴즈 화면을 감싸는 컨테이너 */
 .quiz-container {
   min-height: 100vh;
-  background-color: #6BC2DA;
+  /* background-color: #6BC2DA; */
   display: flex;
   justify-content: center;
   align-items: center;
