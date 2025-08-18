@@ -36,7 +36,7 @@ export default function SetNickName() {
             navigate('/start/quiz');
         } catch (error) {
             console.error(error);
-            navigate('/start/quiz'); 
+            navigate('/'); 
         }
     };
 
