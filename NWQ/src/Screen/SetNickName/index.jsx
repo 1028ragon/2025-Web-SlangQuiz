@@ -32,7 +32,7 @@ export default function SetNickName() {
         try {
             // ✅ 3. API에 공백 제거한 값을 객체 형태로 전송
             setErrorMSG("")
-            await submitNicknameApi({ nickname: trimmedNickname });
+            await submitNicknameApi(trimmedNickname);
             navigate('/start/quiz');
         } catch (error) {
             console.error(error);
