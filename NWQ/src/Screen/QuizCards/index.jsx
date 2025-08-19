@@ -1,4 +1,4 @@
-// src/components/QuizCard.jsx
+// src/Screen/QuizCards/index.jsx
 import React from 'react';
 import './QuizCard.css';
 import { useNavigate } from 'react-router-dom';
