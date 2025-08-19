@@ -6,7 +6,7 @@ import NotFoundPage from './Screen/NotFoundPage';
 import SettingsPage from './Screen/Setting';
 import InquiryPage from './Screen/Inquiry';
 import SetNickName from './Screen/SetNickName';
-import QuizCard from './Screen/QuizCards/index'; // 파일 경로 정확히
+import QuizCard from './Screen/QuizCards/index'; 
 import quizData from './data/quizData';            // mock 데이터
 import QuizDTO from './api/QuizDTO';
 import HelpScreen from './Screen/QuizCards/HelpScreen';
