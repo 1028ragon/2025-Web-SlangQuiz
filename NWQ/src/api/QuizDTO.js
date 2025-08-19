@@ -1,4 +1,4 @@
-// src/models/QuizDTO.js
+// src/api/QuizDTO.js
 
 class QuizDTO {
   constructor(quiz_id, quiz_text, image_url, options) {
