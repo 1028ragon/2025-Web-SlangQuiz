@@ -34,6 +34,7 @@ export default function SetNickName() {
             setErrorMSG("")
             await submitNicknameApi(trimmedNickname);
             navigate('/start/quiz');
+            alert(trimmedNickname)
         } catch (error) {
             console.error(error);
             navigate('/'); 

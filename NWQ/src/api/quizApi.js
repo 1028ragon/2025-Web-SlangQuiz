@@ -2,7 +2,7 @@
 import axios from 'axios';
 import QuizDTO from './QuizDTO'; // 경로는 실제 위치에 맞게
 // 환경변수로 API 주소를 관리 (없으면 기본 서버 주소 사용)
-const API_BASE = import.meta.env.VITE_API_SERVER_URL || 'http://15.164.233.1:8080';
+const API_BASE = import.meta.env.VITE_API_SERVER_URL;
 
 /** 전체 퀴즈 리스트를 가져오는 API */
 export async function fetchQuizList() {
