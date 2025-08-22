@@ -1,84 +1,98 @@
 // src/hooks/useQuizFlow.js
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchQuizList } from '../../../utils/quizApi';
-import { shuffleArray } from '../../../utils/shuffle'; // 퀴즈 랜덤 셔플 함수
+import { fetchNextQuiz } from '../api/quizApi'; // ✅ 경로 수정 (hooks → api)
+import { shuffleArray } from '../utils/shuffle'; // 쓰고 있으면 유지, 안 쓰면 제거
 
-// 퀴즈 흐름 전반을 관리하는 커스텀 훅
+
+// 퀴즈 흐름을 관리하는 커스텀 훅
 export function useQuizFlow() {
   const navigate = useNavigate();
 
-  
-  const [quizPool, setQuizPool] = useState([]);    // 처음엔 빈 배열
-
-  // 현재 퀴즈 인덱스를 나타내는 step 상태
+  // 기존 구조 최대한 유지
+  const [quizPool, setQuizPool] = useState([]); // 이제 사용 안 하지만 최소 변경 위해 둠
   const [step, setStep] = useState(0);
-
-  // 사용자가 선택한 보기 값을 저장하는 상태
   const [selected, setSelected] = useState('');
+  const [currentQuiz, setCurrentQuiz] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [meta, setMeta] = useState(null);
+  const [error, setError] = useState(null);
 
-  // 현재 퀴즈 문제 객체
-  const currentQuiz = quizPool[step];
-
-  // 로딩 상태 관리
-  const [loading, setLoading]   = useState(true);
-
-  // ─── 여기가 핵심 ──────────────────────────────────────
-  // 컴포넌트 마운트 시 한 번만 Mock API 호출
-  useEffect(() => {
-    fetchQuizList()
-      .then(list => setQuizPool(list))
-      .catch(console.error)
-      .finally(() => setLoading(false));
+  // ✅ 핵심: /next 호출
+  const loadNext = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const { quiz, meta } = await fetchNextQuiz();
+      setCurrentQuiz(quiz);
+      setMeta(meta);
+      setStep(meta?.quiz_order ?? 0); // UI에서 쓰면 유지
+    } catch (e) {
+      console.error('[next] error', e);
+      setError(e);
+    } finally {
+      setLoading(false);
+    }
   }, []);
-  // ──────────────────────────────────────────────────────
 
+  // 마운트 시 1회 호출 (기존 mock 호출 제거)
+  useEffect(() => {
+    loadNext();
+  }, [loadNext]);
 
-  // 로딩 중이라면 아래 값들만 반환(QuizCard.jsx 는 loading 체크 없이도 blank 처리됨)
   if (loading) {
-    return { loading, currentQuiz: null, selected, handleAnswer: () => {}, handleNext: () => {}, handleHome: () => {} };
+    return {
+      loading: true,
+      currentQuiz: null,
+      selected: '',
+      handleAnswer: () => {},
+      handleNext: () => {},
+      handleHome: () => {},
+    };
   }
 
-
-  // 사용자가 보기를 선택했을 때 실행되는 함수
+  // 보기 선택 → 기존 흐름 유지
   const handleAnswer = (option) => {
-    setSelected(option);      // 선택값 저장
-    navigate('/answer');      // 정답 확인 화면으로 이동
+    setSelected(option);
+    navigate('/answer');
   };
 
-  // 다음 문제로 이동하는 함수
-  const handleNext = () => {
-    const isLast = step === quizPool.length - 1;
-
-    if (isLast) {
+  // 다음 문제 → /next 다시 호출
+  const handleNext = async () => {
+    if (meta?.is_last) {
       alert('퀴즈가 모두 끝났습니다!');
-      setQuizPool(shuffleArray(quizData)); // 퀴즈를 새로 섞음
-      setStep(0);                          // 인덱스 초기화
-      setSelected('');                    // 선택 초기화
-      navigate('/quiz');                  // 첫 문제로 이동
-    } else {
-      setStep(step + 1);                  // 다음 문제로 이동
-      setSelected('');                    // 선택 초기화
-      navigate('/quiz');                  // 퀴즈 화면으로 이동
+      // 종료 처리는 원하는 화면으로 이동
+      // navigate('/score');  // 점수 화면이 있으면 여기로
+      // 재시작하려면 아래처럼:
+      setSelected('');
+      setStep(0);
+      await loadNext();
+      navigate('/quiz');
+      return;
     }
+    setSelected('');
+    await loadNext();
+    navigate('/quiz');
   };
 
-  // 처음 화면(첫 번째 문제)으로 돌아가는 함수
+  // 첫 화면(퀴즈)로 돌아가기
   const handleHome = () => {
-    setStep(0);
     setSelected('');
     navigate('/quiz');
   };
 
-  // 이 훅에서 외부로 전달할 값들 (각 컴포넌트에서 props로 사용)
   return {
-    currentQuiz,                  // 현재 문제 객체
-    selected,                     // 선택된 보기
-    handleAnswer,                 // 보기 선택 핸들러
-    handleNext,                   // 다음 문제로 이동
-    handleHome,                   // 홈(처음)으로 이동
-    handleExplain: () => navigate('/explain'), // 해설 보기로 이동
-    handleHelp: () => navigate('/help'),       // 도움말 보기로 이동 (선택적 사용)
+    currentQuiz,
+    step,
+    selected,
+    loading: false,
+    error,
+    handleAnswer,
+    handleNext,
+    handleHome,
+    handleExplain: () => navigate('/explain'),
+    handleHelp: () => navigate('/help'),
   };
 }
+
+export default useQuizFlow;
