@@ -3,9 +3,7 @@ import axios from 'axios';
 // 1. axios 인스턴스 생성
 // API 요청의 기본 URL과 공통 설정을 관리합니다.
 const apiClient = axios.create({
-    // 🚨 API 서버의 기본 URL을 실제 환경에 맞게 수정해주세요.
-    // 예: baseURL: 'http://localhost:8080/api'
-    baseURL: 'http://13.209.74.70:8080',
+    baseURL: import.meta.env.VITE_API_SERVER_URL,
 
     // ✅ 2. 쿠키를 주고받기 위한 필수 설정
     // 이 옵션이 true로 설정되어야 브라우저가 서버로부터 받은 쿠키를 저장하고,
