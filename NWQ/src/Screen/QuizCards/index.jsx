@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function QuizCard({ quiz, onAnswer }) {
   const colors = ['pink', 'lightyellow', 'lightblue', 'lightgreen'];
-  const optionLabels = ['가', '나', '다', '라'];
+  const optionLabels = ['1', '2', '3', '4'];
   const navigate = useNavigate();
 
   // quiz가 없거나 메서드가 없을 때 대비
