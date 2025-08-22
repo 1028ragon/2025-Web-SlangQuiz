@@ -13,14 +13,8 @@ const apiClient = axios.create({
     // 클라이언트와 서버의 도메인이 다른 경우(CORS)에 반드시 필요합니다.
     withCredentials: true, 
 });
-
-/**
- * 닉네임 제출 API 함수
- * @param {{ nickname: string }} data - 전송할 닉네임 데이터
- */
-export const submitNicknameApi = (data) => {
+export const submitNicknameApi = (trimmedNickname) => {
     // POST 요청으로 '/users/nickname' 엔드포인트에 닉네임 데이터를 전송합니다.
     // 실제 엔드포인트는 서버 API 명세에 맞게 수정해야 합니다.
-    return apiClient.post('/start', data); 
+    return apiClient.post('/start', {'nickname':trimmedNickname});
 };
-
