@@ -1,36 +1,47 @@
-// src/api/quizApi.js
-import axios from 'axios';
-import QuizDTO from './QuizDTO'; // 경로는 실제 위치에 맞게
-// 환경변수로 API 주소를 관리 (없으면 기본 서버 주소 사용)
-const API_BASE = import.meta.env.VITE_API_SERVER_URL;
+import QuizDTO from './QuizDTO';
+import http from "./https.js"; // 확장자 써주는 게 확실합니다
 
-/** 전체 퀴즈 리스트를 가져오는 API */
-export async function fetchQuizList() {
-  try {
-    const res = await axios.get(`${API_BASE}/quizzes`, {
-      withCredentials: true,
-    });
-    const data = res.data;
+const API_BASE = import.meta.env.VITE_API_SERVER_URL || 'http://13.209.74.70:8080';
 
-    // QuizDTO 인스턴스로 감싸기
-    return data.map(q => new QuizDTO(q.quiz_id, q.quiz_text, q.image_url, q.options));
-  } catch (err) {
-    console.error('[fetchQuizList] API 호출 실패:', err);
-    throw err;
-  }
+// 필요하면 전역 설정도 가능
+// axios.defaults.withCredentials = true;
+
+const toQuizDTO = (d) =>
+  new QuizDTO(
+    d.quiz_id,
+    d.quiz_text,
+    d.image_url,
+    (d.options ?? []).map(o => ({ option_id: o.option_id, option_text: o.option_text }))
+  );
+
+// --- (안 쓰면 지우거나 주석) ---
+// export async function fetchQuizList() { ... }
+// export async function fetchQuizById(id) { ... }
+
+// 다음 문제 1개
+// quizApi.js (요지)
+export async function fetchNextQuiz() {
+  const { data: d } = await http.get('/next');
+  const quizDTO = new QuizDTO(
+    d.quiz_id,
+    d.quiz_text,
+    d.image_url,
+    d.options?.map(o => ({ option_id: o.option_id, option_text: o.option_text })) ?? []
+  );
+  return {
+    quiz: quizDTO,
+    meta: {
+      quiz_order: d.quiz_order,
+      answered_count: d.answered_count,
+      remaining_count: d.remaining_count,
+      is_last: d.is_last,
+      message: d.message,
+      status: d.status,
+    },
+  };
 }
 
-/** 단일 퀴즈 조회 (id 기반) */
-export async function fetchQuizById(id) {
-  try {
-    const res = await axios.get(`${API_BASE}/quizzes/${id}`, {
-      withCredentials: true,
-    });
-    const q = res.data;
-
-    return new QuizDTO(q.quiz_id, q.quiz_text, q.image_url, q.options);
-  } catch (err) {
-    console.error(`[fetchQuizById] id=${id} 호출 실패:`, err);
-    throw err;
-  }
+export async function submitAnswer(option_id) {
+  const { data } = await http.post('/answer', { option_id });
+  return data;
 }

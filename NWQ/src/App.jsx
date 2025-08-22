@@ -9,7 +9,7 @@ import SetNickName from './Screen/SetNickName';
 import QuizCard from './Screen/QuizCards/index';
 import HelpScreen from './Screen/QuizCards/HelpScreen';
 import Scorescreen from './Screen/scorescreen';
-import { fetchQuizList } from './api/quizApi'; // API 연동 추가
+import { fetchNextQuiz, submitAnswer } from './api/quizApi'; // API 연동 추가
 
 function App() {
   const [quizzes, setQuizzes] = useState([]);
@@ -18,15 +18,15 @@ function App() {
 
   useEffect(() => {
     async function loadQuizzes() {
-      try {
-        const data = await fetchQuizList();
-        setQuizzes(data);
-        setLoading(false);
-      } catch (err) {
-        console.error('퀴즈 불러오기 실패:', err);
-        setLoading(false);
-      }
-    }
+   try {
+      const { quiz, meta } = await fetchNextQuiz(); // fetchQuizList → fetchNextQuiz 로 변경
+      setQuizzes([quiz]); // 배열로 맞춰줌
+      setLoading(false);
+   } catch (err) {
+      console.error("퀴즈 불러오기 실패:", err);
+      setLoading(false);
+   }
+}
     loadQuizzes();
   }, []);
 

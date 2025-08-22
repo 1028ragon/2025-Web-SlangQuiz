@@ -3,12 +3,12 @@ import './SetNickName.css';
 import { useState } from 'react';
 import { submitNicknameApi } from "../../api/useUserSubmit.js";
 import ErrorMSG from "../../Components/errorMSG/index.jsx";
+import http from "../../api/https.js";
 
 export default function SetNickName() {
     const navigate = useNavigate();
     const [nickname, setNickname] = useState('');
     const [errorMSG, setErrorMSG] = useState("");
-
     const handleSubmit = async () => {
         // ✅ 1. 새로운 변수에 공백 제거한 값을 할당, 유효성 검사를 위한 정규식 정의
         const trimmedNickname = nickname.trim();
@@ -32,11 +32,11 @@ export default function SetNickName() {
         try {
             // ✅ 3. API에 공백 제거한 값을 객체 형태로 전송
             setErrorMSG("")
-            await submitNicknameApi(trimmedNickname);
+            await http.post('/start', { nickname: trimmedNickname });
             navigate('/start/quiz');
         } catch (error) {
             console.error(error);
-            navigate('/'); 
+            navigate('/start/quiz'); 
         }
     };
 
