@@ -10,7 +10,8 @@ import SetNickName from './Screen/SetNickName';
 import QuizCard from './Screen/QuizCards/index';
 import HelpScreen from './Screen/QuizCards/HelpScreen';
 import Scorescreen from './Screen/scorescreen';
-import AnswerScreen from './Screen/QuizCards/AnswerScreen.jsx'; // ✅ 결과 화면
+import AnswerScreen from './Screen/QuizCards/AnswerScreen.jsx';
+import AnswerExplain from './Screen/QuizCards/AnswerExplain.jsx'; // ✅ 해설 화면
 
 import { fetchNextQuiz, submitAnswer } from './api/quizApi';
 
@@ -34,13 +35,11 @@ function App() {
     })();
   }, []);
 
-  // ✅ 보기 클릭 → /answer POST
-  // QuizCard에서 onAnswer(option) 으로 호출됨에 맞춰 option 객체를 받습니다.
+  // 보기 클릭 → /answer POST
   const handleAnswer = async (option) => {
     try {
       const res = await submitAnswer(option.option_id); // { status, message, is_correct, ... }
-      // 응답 payload를 그대로 state로 넘기며 결과 화면으로 이동
-      navigate('/answer', { state: res });
+      navigate('/answer', { state: res }); // 응답을 상태로 전달
     } catch (e) {
       const status = e?.response?.status;
       const msg = e?.response?.data?.message || e.message || '답안을 제출할 수 없어요.';
@@ -49,16 +48,15 @@ function App() {
         navigate('/start');
         return;
       }
-      // 409(중복 제출/모든 문제 완료) 등도 여기서 처리
-      alert(msg);
+      alert(msg); // 409 등 공통 처리
     }
   };
 
-  // ✅ 결과 화면의 “다음 문제” 버튼
+  // 결과 화면의 “다음 문제”
   const handleNextFromAnswer = async () => {
     try {
       const { quiz } = await fetchNextQuiz();
-      setQuizzes([quiz]); // 새 문제로 교체
+      setQuizzes([quiz]); // 새 문제 교체
       setIdx(0);
       navigate('/start/quiz');
     } catch (e) {
@@ -91,11 +89,19 @@ function App() {
         }
       />
 
-      {/* ✅ /answer 결과 화면 라우트 */}
+      {/* 결과 화면 */}
       <Route
         path="/answer"
-        element={<AnswerScreen onNext={handleNextFromAnswer} />}
+        element={
+          <AnswerScreen
+            onNext={handleNextFromAnswer}
+            onExplain={() => navigate('/explain')} // ✅ 해설 버튼 동작
+          />
+        }
       />
+
+      {/* ✅ 해설 화면 */}
+      <Route path="/explain" element={<AnswerExplain />} />
 
       <Route path="/ScoreScreen" element={<Scorescreen />} />
       <Route path="*" element={<NotFoundPage />} />

@@ -51,3 +51,21 @@ export async function fetchHint() {
     example_text: data.example_text,
   };
 }
+
+
+// ⬇️ 오답 해설 조회
+export async function fetchExplanation() {
+  const { data: d } = await http.get('/explanation'); // => /api/explanation 로 프록시
+  return {
+    quiz_order: d.quiz_order,
+    quiz_id: d.quiz_id,
+    explanations:
+      (d.explanations ?? []).map((o) => ({
+        option_id: o.option_id,
+        option_text: o.option_text,
+        option_meaning: o.option_meaning,
+      })) ?? [],
+    message: d.message,
+    status: d.status,
+  };
+}
