@@ -3,8 +3,8 @@ import React from 'react';
 import './AnswerExplain.css';
 
 export default function AnswerExplain({ quiz, explanations, onBack }) {
-  // '가, 나, 다, 라' 보기 라벨
-  const optionLabels = ['가', '나', '다', '라'];
+  // '1, 2, 3, 4' 보기 라벨
+  const optionLabels = ['1', '2', '3', '4'];
 
   return (
     <div className="explain-container">

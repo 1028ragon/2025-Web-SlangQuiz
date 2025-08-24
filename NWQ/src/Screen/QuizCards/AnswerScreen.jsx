@@ -1,52 +1,84 @@
-// src/components/AnswerScreen.jsx
-import React from 'react';
+// src/Screen/QuizCards/AnswerScreen.jsx
+import { useLocation, useNavigate } from 'react-router-dom';
 import './AnswerScreen.css';
 
-// 정답 화면 컴포넌트
-export default function AnswerScreen({ quiz, selected, onNext, onHome, onExplain, hintData }) {
-  const isCorrect = hintData && selected === hintData.answer;
+export default function AnswerScreen({ onNext, onExplain }) {
+  const { state } = useLocation();          // /answer 응답 payload
+  const navigate = useNavigate();
+  const d = state;
+
+  // 직접 주소로 진입했을 때 방어
+  if (!d) {
+    return (
+      <div className="answer-container">
+        <div className="answer-card">
+          <p>결과 데이터가 없습니다.</p>
+          <button className="btn home" onClick={() => navigate('/start/quiz')}>문제로 돌아가기</button>
+        </div>
+      </div>
+    );
+  }
+
+  const {
+    message = '',
+    is_correct = false,
+    option_text = '',
+    option_meaning = '',
+    example_text = '',
+    image_url,               // 있으면 표시(없으면 무시)
+  } = d;
+
+  const hasMeaning = typeof option_meaning === 'string' && option_meaning.trim().length > 0;
+  const hasExample = typeof example_text === 'string' && example_text.trim().length > 0;
 
   return (
     <div className="answer-container">
       <div className="answer-card">
-
-        {/* 정오답 아이콘 */}
-        <div className={`ox-symbol ${isCorrect ? 'circle' : 'cross'}`}>
-          {isCorrect ? 'O' : 'X'}
+        {/* O/X 아이콘 + 결과 텍스트 */}
+        <div className={`ox-symbol ${is_correct ? 'circle' : 'cross'}`}>
+          {is_correct ? '○' : '×'}
+        </div>
+        <div
+          className="result-text"
+          style={{ color: is_correct ? '#0004ffff' : '#b42318' }}
+        >
+          {message}
         </div>
 
-        {/* 정오답 텍스트 */}
-        <div className="result-text">
-          {isCorrect ? '정답입니다' : '오답입니다'}
-        </div>
+        {/* 퀴즈 이미지(선택) */}
+        {image_url ? (
+          <img src={image_url} alt="quiz" className="quiz-image" />
+        ) : null}
 
-        {/* 퀴즈 이미지 */}
-        <img src={quiz.getImageUrl()} alt="quiz" className="quiz-image" />
-
-        {/* 정답 단어 */}
-        <div className="answer-text">{hintData?.answer || '로딩 중...'}</div>
+        {/* 정답 */}
+        <div className="section-title">정답</div>
+        <div className="section-box">{option_text || '—'}</div>
 
         {/* 의미 */}
         <div className="section-title">의미</div>
-        <div className="section-box">
-          {typeof hintData?.meaning === 'string'
-            ? hintData.meaning.split('\n').map((line, i) => <div key={i}>{line}</div>)
-            : '불러오는 중...'}
+        <div className="section-box" style={{ whiteSpace: 'pre-wrap' }}>
+          {hasMeaning ? option_meaning : '설명 없음'}
         </div>
 
-        {/* 예시 */}
-        <div className="section-title">예시</div>
-        <div className="section-box">
-          {typeof hintData?.example === 'string'
-            ? hintData.example.split('\n').map((line, i) => <div key={i}>{line}</div>)
-            : '불러오는 중...'}
+        {/* 예문 */}
+        <div className="section-title">예문</div>
+        <div className="section-box" style={{ whiteSpace: 'pre-wrap' }}>
+          {hasExample ? example_text : '예문 없음'}
         </div>
 
-        {/* 버튼 */}
+        {/* 버튼들 */}
         <div className="button-group">
-          <button className="btn home" onClick={onHome}>홈</button>
-          <button className="btn next" onClick={onNext}>다음</button>
-          <button className="btn explain" onClick={onExplain}>해설</button>
+          <button className="btn home" onClick={() => navigate('/start/quiz')}>
+            문제로 돌아가기
+          </button>
+          <button className="btn next" onClick={onNext}>
+            다음 문제
+          </button>
+          {onExplain ? (
+            <button className="btn explain" onClick={onExplain}>
+              해설
+            </button>
+          ) : null}
         </div>
       </div>
     </div>

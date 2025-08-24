@@ -24,15 +24,30 @@ export async function fetchNextQuiz() {
   };
 }
 
-// ✅ 정답 제출 (App.jsx에서 import { submitAnswer } ... 로 쓰는 그 함수)
+// 정답 제출 (명세: POST /answer { option_id })
 export async function submitAnswer(option_id) {
   if (option_id == null) throw new Error('option_id is required');
-  const { data } = await http.post('/answer', { option_id });
-  return data; // 서버 응답 형태 그대로 반환
+  const { data } = await http.post('/answer', { option_id }); // => /api/answer, 쿠키 자동 포함
+  // data: { status, message, is_correct, selected_option_id, quiz_order, quiz_id,
+  //         option_id, option_text, option_meaning, example_text }
+  return data;
 }
 
-// 필요하면 힌트도 함께
 export async function fetchHint() {
-  const { data } = await http.get('/hint');
-  return data;
+  const { data } = await http.get('/hint'); // => /api/hint 로 프록시, 쿠키 자동 포함
+  // 상태 코드에 따른 처리
+  if (data?.status !== 200) {
+    const err = new Error(data?.message || '힌트 조회 실패');
+    err.response = { status: data?.status, data };
+    throw err;
+  }
+  // 사용하기 좋게 필드 매핑
+  return {
+    status: data.status,
+    message: data.message,
+    quiz_order: data.quiz_order,
+    quiz_id: data.quiz_id,
+    hint_text: data.hint_text,
+    example_text: data.example_text,
+  };
 }
