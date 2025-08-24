@@ -12,14 +12,21 @@ import HelpScreen from './Screen/QuizCards/HelpScreen';
 import Scorescreen from './Screen/scorescreen';
 import AnswerScreen from './Screen/QuizCards/AnswerScreen.jsx';
 import AnswerExplain from './Screen/QuizCards/AnswerExplain.jsx'; // ✅ 해설 화면
+import { useSound } from './hooks/UseSound';
 
 import { fetchNextQuiz, submitAnswer } from './api/quizApi';
+
+const SFX_CORRECT = encodeURI('/audio/Right answer.mp3');
+const SFX_WRONG   = encodeURI('/audio/Wrong answer.mp3');
 
 function App() {
   const [quizzes, setQuizzes] = useState([]);
   const [idx, setIdx] = useState(0);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const playCorrect = useSound(SFX_CORRECT); // SettingsContext의 effectVolume로 자동 볼륨 적용
+  const playWrong   = useSound(SFX_WRONG);
+
 
   // 최초 1문제 로드
   useEffect(() => {
@@ -39,6 +46,10 @@ function App() {
   const handleAnswer = async (option) => {
     try {
       const res = await submitAnswer(option.option_id); // { status, message, is_correct, ... }
+      
+      // 🔊 정답/오답 효과음
+      if (res?.is_correct) playCorrect();
+      else playWrong();
       navigate('/answer', { state: res }); // 응답을 상태로 전달
     } catch (e) {
       const status = e?.response?.status;
