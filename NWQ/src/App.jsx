@@ -29,19 +29,6 @@ function App() {
   const playWrong   = useSound(SFX_WRONG);
 
 
-useEffect(() => {
-  (async () => {
-    try {
-      const { quiz } = await fetchNextQuiz();
-      setQuizzes([quiz]); // 배열 형태 유지
-    } catch (err) {
-      console.error('퀴즈 불러오기 실패:', err);
-    } finally {
-      setLoading(false);
-    }
-  })();
-}, []);
-
 
 // 3-1) 공용 문제 로더
 async function loadNext() {
@@ -52,7 +39,10 @@ async function loadNext() {
     setIdx(0);
   } catch (e) {
     const s = e?.response?.status ?? e?.httpStatus;
-    if (s === 409) return navigate('/scorescreen'); // 모두 완료
+      if (status === 409) {        // 모든 문제 완료
+     navigate('/scoreScreen');  // ✅ 결과화면으로
+     return;
+   };
     if (s === 401 || s === 404) return navigate('/'); // 세션 없음/만료
     console.error('문제 불러오기 실패:', e);
   } finally {
@@ -80,6 +70,10 @@ useEffect(() => {
     } catch (e) {
       const status = e?.response?.status;
       const msg = e?.response?.data?.message || e.message || '답안을 제출할 수 없어요.';
+        if (status === 409) {            // 모든 문제 완료
+       navigate('/scoreScreen');      // ✅ 결과화면으로
+       return;
+  };
       if (status === 401) {
         alert(msg || '세션이 만료되었습니다. 다시 시작해 주세요.');
         navigate('/start');
@@ -97,14 +91,18 @@ useEffect(() => {
       setIdx(0);
       navigate('/start/quiz');
     } catch (e) {
-      const status = e?.response?.status;
-      if (status === 401) {
-        navigate('/start');
-        return;
-      }
-      console.error('다음 문제 로드 실패:', e);
-      alert('다음 문제를 불러오지 못했습니다.');
-    }
+      const s = e?.response?.status ?? e?.httpStatus;
+ if (s === 409) {               // ✅ 모두 완료
+   navigate('/scorescreen');
+   return;
+ }
+ if (s === 401 || s === 404) {  // 세션 없음/만료
+   navigate('/');
+   return;
+ }
+ console.error('다음 문제 로드 실패:', e);
+ alert('다음 문제를 불러오지 못했습니다.');
+}
   };
 
   return (
@@ -140,7 +138,7 @@ useEffect(() => {
       {/* ✅ 해설 화면 */}
       <Route path="/explain" element={<AnswerExplain />} />
 
-      <Route path="/ScoreScreen" element={<Scorescreen />} />
+      <Route path="/scorescreen" element={<Scorescreen />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );

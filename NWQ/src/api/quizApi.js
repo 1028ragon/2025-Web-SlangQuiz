@@ -69,3 +69,8 @@ export async function fetchExplanation() {
     status: d.status,
   };
 }
+
+export async function fetchResult() {
+  const { data } = await http.get('/result');
+  return data;
+}
