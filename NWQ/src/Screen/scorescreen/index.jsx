@@ -38,9 +38,13 @@ export default function ScoreScreen() {
       {/* 점수 일러스트 */}
       <ScoreImage score={score} />
 
-      {/* 점수 수치 표시 (스타일은 기존 CSS 유지) */}
-      <div id="now-score">{score}</div>
-      <div id="basic-score">{totalCount}/100</div>
+      <div className="score-one-line">
+        <span id="now-score">{score}</span>
+        <span id="basic-score">점</span>
+      </div>
+
+
+
 
       {/* 다시하기 / 홈 / 설정 */}
       <button className="retry-button" onClick={handleRetryClick}>다시하기</button>

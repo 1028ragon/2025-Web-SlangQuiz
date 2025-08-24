@@ -1,449 +1,280 @@
 /* 1) 전체 배경 색 */
 html,body {
-   height: 100%;
-   margin: 0;
-   background: #6ec5e9;   /* 배경 파란색 */
-   overflow: hidden;    /* 가로 세로 스크롤 방지 */
+  height: 100%;
+  margin: 0;
+  background: #6ec5e9;   /* 배경 파란색 */
+  overflow: hidden;      /* 가로 세로 스크롤 방지 */
 }
 
+/* 상단 텍스트 */
 #name-id {
-   /*border: 1px solid black;*/
-
-   position: absolute;
-   z-index: 10;
-   width: 500px;
-   height: 50px;
-
-   transform: translate(-50%, -50%);
-   left: 50%;
-   top: 10%;
-
-
-   font-size: 70px;
-   font-weight: 900;
-   text-align: center;
-   line-height: 75px;
-   color: white;
-
-      /* 텍스트 외곽선 효과 */
-   text-shadow:
-      3px 0px black,
-      -3px 0px black,
-      0px -3px black,
-      0px 3px black,
-      3px 3px black,
-      3px -3px black,
-      -3px 3px black,
-      -3px -3px black;
+  position: absolute;
+  z-index: 10;
+  width: 500px;
+  height: 50px;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 10%;
+  font-size: 70px;
+  font-weight: 900;
+  text-align: center;
+  line-height: 75px;
+  color: white;
+  text-shadow:
+    3px 0px black, -3px 0px black, 0px -3px black, 0px 3px black,
+    3px 3px black, 3px -3px black, -3px 3px black, -3px -3px black;
 }
 
 #mention {
-   /*border: 1px solid black;*/
-
-   position: absolute;
-   z-index: 10;
-   width: 500px;
-   height: 50px;
-
-   transform: translate(-50%, -50%);
-   left: 50%;
-   top: 20%;
-
-   font-size:70px;
-   font-weight: 900;
-   text-align: center;
-   line-height: 75px;
-   color: white;
-
-      /* 텍스트 외곽선 효과 */
-   text-shadow:
-      3px 0px black,
-      -3px 0px black,
-      0px -3px black,
-      0px 3px black,
-      3px 3px black,
-      3px -3px black,
-      -3px 3px black,
-      -3px -3px black;
+  position: absolute;
+  z-index: 10;
+  width: 500px;
+  height: 50px;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 20%;
+  font-size: 70px;
+  font-weight: 900;
+  text-align: center;
+  line-height: 75px;
+  color: white;
+  text-shadow:
+    3px 0px black, -3px 0px black, 0px -3px black, 0px 3px black,
+    3px 3px black, 3px -3px black, -3px 3px black, -3px -3px black;
 }
 
-#now-score{
-   /*border: 1px solid black;*/
-
-   position: absolute;
-   z-index: 10;
-
-   transform: translate(-50%, -50%);
-   
-   font-size:80px;
-   font-weight: 900;
-   text-align: center;
-   line-height: 75px;
-
-   width: 100px;
-
-   top: 31%;
-   left: 45%;
-
-   font-weight: 900;
-   color: black;
+/* ✅ 점수 한 줄(0 점) — 항상 가로 유지 */
+.score-one-line {
+  position: absolute;          /* 카드 안에서 원하는 위치에 고정 */
+  z-index: 10;
+  left: 50%;
+  top: 31%;                    /* 필요하면 퍼센트만 조정 */
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  white-space: nowrap;         /* 줄바꿈 금지 */
 }
 
+/* 숫자(0) */
+#now-score {
+  display: inline-block;
+  font-weight: 900;
+  font-size: clamp(56px, 12vw, 120px);
+  line-height: 1;
+  color: #000;
+}
+
+/* 단위(점) */
 #basic-score {
-   /*border: 1px solid black;*/
-
-   position: absolute;
-   z-index: 10;
-
-   transform: translate(-50%, -50%);
-   
-   font-size:40px;
-   font-weight: 900;
-   text-align: center;
-   line-height: 75px;
-
-   top: 31%;
-   width: 100px;
-   
-   left: 53%;
-
-   font-weight: 900;
-   color: black;
+  display: inline-block;
+  font-weight: 900;
+  font-size: clamp(28px, 6vw, 60px);
+  line-height: 1;
+  color: #000;
 }
 
+/* 이미지 */
 .image{
-   position: absolute;
-   transform: translate(-50%, -50%);
-   z-index: 10;
-   width: 280px;
-   height: auto;
-   top: 50%;
-   left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  width: 280px;
+  height: auto;
+  top: 50%;
+  left: 50%;
 }
 
+/* 버튼들 */
 .retry-button {
-   transform: translate(-50%, -50%);
-
-   text-decoration: none;
-   position: absolute;
-   z-index: 10;
-   width: 300px;
-   height: 80px;
-   background-color: #F4B938;
-   border-radius: 20px;
-
-   top: 74%;
-   left: 50%;
-
-   /* 입체감 (상단 왼쪽 밝음, 하단 오른쪽 어두움) */
-   box-shadow:
-      inset 0 4px 2px #FFF58C,
-      0 4px 2px #D68619;
-
-   font-weight: 900;
-   font-size: 40px;
-   text-align: center;
-   line-height: 85px;
-   color: white;
-
-    /* 텍스트 외곽선 효과 */
-   text-shadow:
-      3px 0px black,
-      -3px 0px black,
-      0px -3px black,
-      0px 3px black,
-      3px 3px black,
-      3px -3px black,
-      -3px 3px black,
-      -3px -3px black;
+  transform: translate(-50%, -50%);
+  text-decoration: none;
+  position: absolute;
+  z-index: 10;
+  width: 300px;
+  height: 80px;
+  background-color: #F4B938;
+  border-radius: 20px;
+  top: 74%;
+  left: 50%;
+  box-shadow: inset 0 4px 2px #FFF58C, 0 4px 2px #D68619;
+  font-weight: 900;
+  font-size: 40px;
+  text-align: center;
+  line-height: 85px;
+  color: white;
+  text-shadow:
+    3px 0px black, -3px 0px black, 0px -3px black, 0px 3px black,
+    3px 3px black, 3px -3px black, -3px 3px black, -3px -3px black;
 }
 
 .home-button {
-   text-decoration: none;
-   position: absolute;
-   z-index: 10;
-   width: 140px;
-   height: 80px;
-   background-color: #38ACF4;
-   border-radius: 20px;
-
-   top: 81%;
-   left: 39%;
-
-
-   /* 버튼 효과 */
-   box-shadow:
-      inset 0 4px 2px #C6EBFF,
-      0 4px 2px #256BAE;
-
-   /* 글씨 속성 */
-   font-weight: 900;   /* 글씨 굵기 */
-   font-size: 40px;    /* 글씨 크기 */
-   text-align: center; /* 글씨 위치 */
-   line-height: 85px;  /* 행간 */
-   color: white;     /* 글씨 색상 */
-
-   /* 텍스트 외곽선 효과 */
-   text-shadow:
-      3px 0px black,
-      -3px 0px black,
-      0px -3px black,
-      0px 3px black,
-      3px 3px black,
-      3px -3px black,
-      -3px 3px black,
-      -3px -3px black;
+  text-decoration: none;
+  position: absolute;
+  z-index: 10;
+  width: 140px;
+  height: 80px;
+  background-color: #38ACF4;
+  border-radius: 20px;
+  top: 81%;
+  left: 39%;
+  box-shadow: inset 0 4px 2px #C6EBFF, 0 4px 2px #256BAE;
+  font-weight: 900;
+  font-size: 40px;
+  text-align: center;
+  line-height: 85px;
+  color: white;
+  text-shadow:
+    3px 0px black, -3px 0px black, 0px -3px black, 0px 3px black,
+    3px 3px black, 3px -3px black, -3px 3px black, -3px -3px black;
 }
-
 
 .setting-button {
-   text-decoration: none;
-   position: absolute;
-   z-index: 10;
-   width: 140px;
-   height: 80px;
-   background-color: #82C75E;
-   border-radius: 20px;
-
-   top: 81%;
-   left: 51%;
-
-   /* 버튼 효과 */
-   box-shadow:
-      inset 0 4px 2px #D8F8C9,
-      0 4px 2px #4B882C;
-
-    /* 텍스트 스타일 */
-   font-weight: 900;   /* 글씨 굵기 */
-   font-size: 40px;    /* 글씨 크기 */
-   text-align: center; /* 글씨 위치 */
-   line-height: 85px;  /* 행간 */
-   color: white;     /* 글씨 색상 */
-
-    /* 텍스트 외곽선 효과 */
-   text-shadow:
-      3px 0px black,
-      -3px 0px black,
-      0px -3px black,
-      0px 3px black,
-      3px 3px black,
-      3px -3px black,
-      -3px 3px black,
-      -3px -3px black;
-   }
-
-   /*흰 배경 네모 - 중앙 배치 및 23px 고정 마진 */
-   .back-rectangle {
-   position: absolute;
-   z-index: 5;
-   top: 23px;
-   bottom: 23px;
-   left: 23px;
-   right: 23px;
-   background-color: white;
-   border-radius: 10px;
-   }
-
-
-   /* --- 미디어 쿼리 시작: 태블릿 및 큰 모바일 (최대 768px 너비) --- */
-   @media (max-width: 768px) {
-      /* 흰 배경 네모: 중앙 배치 및 23px 고정 마진 유지 */
-      .back-rectangle {
-         top: 23px;
-         bottom: 23px;
-         left: 23px;
-         right: 23px;
-         border-radius: 10px;
-      }
-
-      /* 텍스트 요소들 */
-      #name-id {
-         width: 900;
-         width: 500px;
-         top: 70px;
-         transform: translate(-50%, -50%);
-         left:50%;
-         font-size: 50px;
-         line-height: 60px;
-      }
-
-      #mention {
-         transform: translate(-50%, -50%);
-         left:50%;
-         top: 120px;
-         width: 500px;
-         margin: 0 auto;
-         font-size: 50px;
-         line-height: 65px;
-      }
-
-      #now-score{
-         width: 900;
-         transform: translate(-50%, -50%);
-         left: 40%;
-         top: 27%;
-         font-size: 90px;
-      }
-
-      #basic-score {
-         width: 900;
-         transform: translate(-50%, -50%);
-         left: 60%;
-         top: 27%;
-         font-size: 40px;
-      }
-
-   /* 이미지 */
-   .image{
-      position: absolute;
-      transform: translate(-50%, -50%);
-      z-index: 10;
-      width: 40%;
-      height: auto;
-      top: 52%;
-      left: 50%;
-   }
-
-   /* 버튼들 */
-   .retry-button {
-      transform: translate(-50%, -50%);
-      top: 77%;
-      left: 50%;
-
-      width: 80vw;
-      height: 10vh;
-
-      font-size: 50px;
-      line-height: 80px;
-
-      border-radius: 2.5vw;
-   }
-
-   .home-button, .setting-button {
-      width: 38vw;
-      height: 10vh;
-
-      font-size: 50px;
-      line-height: 85px;
-   }
-
-   .home-button {
-      top: 83vh;
-      left: 10vw;
-   }
-
-   .setting-button {
-      top: 83vh;
-      left: 50vw;
-   }
+  text-decoration: none;
+  position: absolute;
+  z-index: 10;
+  width: 140px;
+  height: 80px;
+  background-color: #82C75E;
+  border-radius: 20px;
+  top: 81%;
+  left: 51%;
+  box-shadow: inset 0 4px 2px #D8F8C9, 0 4px 2px #4B882C;
+  font-weight: 900;
+  font-size: 40px;
+  text-align: center;
+  line-height: 85px;
+  color: white;
+  text-shadow:
+    3px 0px black, -3px 0px black, 0px -3px black, 0px 3px black,
+    3px 3px black, 3px -3px black, -3px 3px black, -3px -3px black;
 }
 
-/* --- 미디어 쿼리 시작: 작은 모바일 (최대 480px 너비) --- */
+/* 흰 배경 네모 */
+.back-rectangle {
+  position: absolute;
+  z-index: 5;
+  top: 23px;
+  bottom: 23px;
+  left: 23px;
+  right: 23px;
+  background-color: white;
+  border-radius: 10px;
+}
+
+/* --- 태블릿 및 큰 모바일 --- */
+@media (max-width: 768px) {
+  .back-rectangle {
+    top: 23px; bottom: 23px; left: 23px; right: 23px; border-radius: 10px;
+  }
+
+  #name-id {
+    width: 500px;
+    top: 70px;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    font-size: 50px;
+    line-height: 60px;
+  }
+
+  #mention {
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 120px;
+    width: 500px;
+    margin: 0 auto;
+    font-size: 50px;
+    line-height: 65px;
+  }
+
+  /* 점수 위치만 조정 (폰트는 clamp로 자동 대응) */
+  .score-one-line { top: 27%; }
+
+  .image{
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    width: 40%;
+    height: auto;
+    top: 52%;
+    left: 50%;
+  }
+
+  .retry-button {
+    transform: translate(-50%, -50%);
+    top: 77%;
+    left: 50%;
+    width: 80vw;
+    height: 10vh;
+    font-size: 50px;
+    line-height: 80px;
+    border-radius: 2.5vw;
+  }
+
+  .home-button, .setting-button {
+    width: 38vw;
+    height: 10vh;
+    font-size: 50px;
+    line-height: 85px;
+  }
+
+  .home-button { top: 83vh; left: 10vw; }
+  .setting-button { top: 83vh; left: 50vw; }
+}
+
+/* --- 작은 모바일 --- */
 @media (max-width: 480px) {
-   /* 흰 배경 네모: 중앙 배치 및 23px 고정 마진 유지 */
-   .back-rectangle {
-      top: 23px;
-      bottom: 23px;
-      left: 23px;
-      right: 23px;
-      border-radius: 10px;
-   }
+  .back-rectangle {
+    top: 23px; bottom: 23px; left: 23px; right: 23px; border-radius: 10px;
+  }
 
-   /* 텍스트 요소들 */
-   #name-id, #mention {
-      display: flex;
-      justify-content: center; /* 수평 중앙 정렬 */
-      align-items: center;    /* 수직 중앙 정렬 */
-      font-size: 40px;
-      line-height: 35px;
-   }
+  #name-id, #mention {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    line-height: 35px;
+  }
 
-   #mention {
-      top:120px;
-      width: 300px;
-   }
+  #mention { top: 120px; width: 300px; }
+  #name-id { top: 70px; width: 300px; }
 
-   #name-id {
-      top: 70px;
-      width: 300px;
-   }
+  /* 점수 위치만 살짝 위로 */
+  .score-one-line { top: 25%; }
 
-   #now-score {
-      width: 900;
-      transform: translate(-50%, -50%);
-      left: 40%;
-      top: 25%;
-      font-size: 80px;
-   }
+  .image{
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    width: 70%;
+    height: auto;
+    top: 50%;
+    left: 50%;
+  }
 
-   #basic-score {
-      font-size: 30px;
-      line-height: 8.5vh;
-      width: 900;
-      transform: translate(-50%, -50%);
-      left: 65%;
-      top: 25%;
-   }
+  .retry-button {
+    width: 80vw;
+    height: 10vh;
+    top: 75%;
+    left: 50%;
+    font-size: 40px;
+    line-height: 80px;
+  }
 
-    /* 이미지 */
-   .image{
-      position: absolute;
-      transform: translate(-50%, -50%);
-      z-index: 10;
-      width: 70%;
-      height: auto;
-      top: 50%;
-      left: 50%;
-   }
+  .home-button, .setting-button {
+    width: 38vw;
+    height: 10vh;
+    font-size: 40px;
+    line-height: 80px;
+  }
 
-    /* 버튼들 */
-   .retry-button {
-      width: 35-px;
-      height: 10vh;
-      top: 75%;
-      left: 50%;
-      font-size: 40px;
-      line-height: 80px;
-   }
-
-   .home-button, .setting-button {
-      width: 38vw;
-      height: 10vh;
-
-      font-size: 40px;
-      line-height: 80px;
-
-   }
-
-   .home-button {
-      top: 82vh;
-      left: 10vw;
-   }
-
-   .setting-button {
-      top: 82vh;
-      left: 52vw;
-   }
+  .home-button { top: 82vh; left: 10vw; }
+  .setting-button { top: 82vh; left: 52vw; }
 }
 
-/*labtop 1024*/
-@media (min-width:770px) and (max-width: 1024px) {
-   #name-id, #mention {
-      font-size: 60px;
-      line-height: 50px;
-   }
-
-   #now-score {
-      top: 29%;
-   }
-
-   #basic-score{
-      top: 29%;
-      left: 55%
-   }
-
-   .home-button {
-      left: 35%;
-   }
+/* --- 랩탑 1024 --- */
+@media (min-width: 770px) and (max-width: 1024px) {
+  #name-id, #mention { font-size: 60px; line-height: 50px; }
+  .score-one-line { top: 29%; }
+  .home-button { left: 35%; }
 }
-

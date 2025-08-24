@@ -11,98 +11,105 @@ import QuizCard from './Screen/QuizCards/index';
 import HelpScreen from './Screen/QuizCards/HelpScreen';
 import Scorescreen from './Screen/scorescreen';
 import AnswerScreen from './Screen/QuizCards/AnswerScreen.jsx';
-import AnswerExplain from './Screen/QuizCards/AnswerExplain.jsx'; // ✅ 해설 화면
-import { useSound } from './hooks/UseSound';
+import AnswerExplain from './Screen/QuizCards/AnswerExplain.jsx';
 
+import { useSound } from './hooks/UseSound';
 import { fetchNextQuiz, submitAnswer } from './api/quizApi';
 
 const SFX_CORRECT = encodeURI('/audio/Right answer.mp3');
 const SFX_WRONG   = encodeURI('/audio/Wrong answer.mp3');
 
 function App() {
-  const [quizzes, setQuizzes] = useState([]);
-  const [idx, setIdx] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const playCorrect = useSound(SFX_CORRECT); // SettingsContext의 effectVolume로 자동 볼륨 적용
+  const [quizzes, setQuizzes]   = useState([]);
+  const [idx, setIdx]           = useState(0);
+  const [loading, setLoading]   = useState(true);
+  const [lastMeta, setLastMeta] = useState(null);  // /next meta 저장
+  const [completed, setCompleted] = useState(false); // ✅ 세션 완료 플래그
+
+  const navigate  = useNavigate();
+  const location  = useLocation();
+
+  const playCorrect = useSound(SFX_CORRECT);
   const playWrong   = useSound(SFX_WRONG);
 
-
-
-// 3-1) 공용 문제 로더
-async function loadNext() {
-  setLoading(true);
-  try {
-    const { quiz } = await fetchNextQuiz();   // GET /next
-    setQuizzes([quiz]);
-    setIdx(0);
-  } catch (e) {
-    const s = e?.response?.status ?? e?.httpStatus;
-      if (status === 409) {        // 모든 문제 완료
-     navigate('/scoreScreen');  // ✅ 결과화면으로
-     return;
-   };
-    if (s === 401 || s === 404) return navigate('/'); // 세션 없음/만료
-    console.error('문제 불러오기 실패:', e);
-  } finally {
-    setLoading(false);
+  /**
+   * ✅ 공용 /next 로더
+   * - completed 상태면 호출 자체를 막음
+   * - 409가 오면 completed=true로 세팅하고 결과 화면으로
+   */
+  async function loadNext() {
+    if (completed) return;               // 이미 완료면 아무 것도 하지 않음
+    setLoading(true);
+    try {
+      const { quiz, meta } = await fetchNextQuiz(); // GET /next
+      setQuizzes([quiz]);
+      setLastMeta(meta);
+      setIdx(0);
+    } catch (e) {
+      const s = e?.response?.status ?? e?.httpStatus;
+      if (s === 409) {
+        // 모든 문제 완료 → 더 이상 /next 호출 금지
+        setCompleted(true);
+        navigate('/scorescreen');
+        return;
+      }
+      if (s === 401 || s === 404) {
+        navigate('/'); // 세션 없음/만료
+        return;
+      }
+      console.error('문제 불러오기 실패:', e);
+    } finally {
+      setLoading(false);
+    }
   }
-}
 
-// 3-2) /start/quiz로 "들어올 때마다" 문제 로드
-useEffect(() => {
-  if (location.pathname === '/start/quiz') {
-    loadNext();
-  }
-}, [location.pathname]);
+  /**
+   * ✅ 라우트가 '/start/quiz'로 들어올 때만 /next 호출
+   * - (중요) 새로 시작하는 흐름을 고려해 completed를 항상 false로 리셋
+   *   (결과화면에서 "다시 시작/문제로" 눌러 새 세션을 연 직후 바로 로딩)
+   */
+  useEffect(() => {
+    if (location.pathname === '/start/quiz') {
+      setCompleted(false); // 새 세션 가정(또는 진행 중 세션) → 가드 해제
+      loadNext();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
 
-
-  // 보기 클릭 → /answer POST
+  /**
+   * ✅ 보기 선택 → /answer POST
+   */
   const handleAnswer = async (option) => {
     try {
-      const res = await submitAnswer(option.option_id); // { status, message, is_correct, ... }
-      
-      // 🔊 정답/오답 효과음
-      if (res?.is_correct) playCorrect();
-      else playWrong();
-      navigate('/answer', { state: res }); // 응답을 상태로 전달
+      const res = await submitAnswer(option.option_id);
+      res?.is_correct ? playCorrect() : playWrong();
+      navigate('/answer', { state: res });
     } catch (e) {
       const status = e?.response?.status;
       const msg = e?.response?.data?.message || e.message || '답안을 제출할 수 없어요.';
-        if (status === 409) {            // 모든 문제 완료
-       navigate('/scoreScreen');      // ✅ 결과화면으로
-       return;
-  };
       if (status === 401) {
         alert(msg || '세션이 만료되었습니다. 다시 시작해 주세요.');
         navigate('/start');
         return;
       }
-      alert(msg); // 409 등 공통 처리
+      alert(msg);
     }
   };
 
-  // 결과 화면의 “다음 문제”
+  /**
+   * ✅ 결과 화면의 “다음 문제”
+   * - 마지막 문제로 표시되었거나(completed / lastMeta.is_last)면
+   *   더 이상 /next를 호출하지 않고 바로 결과로 이동
+   */
   const handleNextFromAnswer = async () => {
-    try {
-      const { quiz } = await fetchNextQuiz();
-      setQuizzes([quiz]); // 새 문제 교체
-      setIdx(0);
+    if (completed || lastMeta?.is_last) {
+      navigate('/scorescreen');
+      return;
+    }
+    await loadNext();                     // 여기에서 409면 loadNext가 내부 처리
+    if (location.pathname !== '/start/quiz') {
       navigate('/start/quiz');
-    } catch (e) {
-      const s = e?.response?.status ?? e?.httpStatus;
- if (s === 409) {               // ✅ 모두 완료
-   navigate('/scorescreen');
-   return;
- }
- if (s === 401 || s === 404) {  // 세션 없음/만료
-   navigate('/');
-   return;
- }
- console.error('다음 문제 로드 실패:', e);
- alert('다음 문제를 불러오지 못했습니다.');
-}
+    }
   };
 
   return (
@@ -124,20 +131,17 @@ useEffect(() => {
         }
       />
 
-      {/* 결과 화면 */}
       <Route
         path="/answer"
         element={
           <AnswerScreen
             onNext={handleNextFromAnswer}
-            onExplain={() => navigate('/explain')} // ✅ 해설 버튼 동작
+            onExplain={() => navigate('/explain')}
           />
         }
       />
 
-      {/* ✅ 해설 화면 */}
       <Route path="/explain" element={<AnswerExplain />} />
-
       <Route path="/scorescreen" element={<Scorescreen />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
