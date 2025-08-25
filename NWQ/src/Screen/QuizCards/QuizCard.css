@@ -1,113 +1,119 @@
-/* 전체 퀴즈 화면을 감싸는 컨테이너 */
+/* =========================
+   QuizCard.css (responsive)
+   ========================= */
+
+/* 전체 퀴즈 화면 컨테이너 */
 .quiz-container {
   min-height: 100vh;
-  /* background-color: #6BC2DA; */
+  /* 필요하면 배경색 사용: background-color: #6BC2DA; */
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 24px;
+  padding: clamp(16px, 4vw, 32px);
   box-sizing: border-box;
 }
 
-/* 퀴즈 카드 박스 */
+/* 카드 박스 */
 .quiz-card {
   width: 100%;
-  max-width: 900px; /* ✅ PC에서도 꽉 차는 넓이로 확장 */
-  background-color: white;
+  max-width: 900px;            /* PC에서도 넓게 */
+  background-color: #fff;
   border-radius: 20px;
-  padding: 32px;
+  padding: clamp(20px, 5vw, 32px);
   box-sizing: border-box;
   text-align: center;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
-/* 문제 제목 */
+/* 제목/부제 – 모바일일수록 더 크게 */
 .quiz-title {
   font-weight: 900;
-  font-size: 24px;
-  margin-bottom: 6px;
+  font-size: clamp(20px, 5.6vw, 28px);
+  margin-bottom: clamp(6px, 1.2vw, 8px);
 }
 
-/* 부제목 또는 설명 */
 .quiz-subtitle {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 16px;
+  font-size: clamp(16px, 4.6vw, 20px);
+  font-weight: 700;
+  margin-bottom: clamp(14px, 3vw, 20px);
 }
 
-/* 문제 이미지 */
+/* 문제 이미지 - 더 크게 */
 .quiz-image {
-  width: 100%;
-  max-width: 300px;
+  display: block;
+  margin: 16px auto 28px;
   height: auto;
   border-radius: 20px;
-  margin: 10px auto 24px;
-  display: block;
+  object-fit: contain;
+  /* 데스크톱/큰 화면: 카드 폭에 비례해 커지고, 최대 440px */
+  width: clamp(260px, 32vw, 440px);
+  max-width: 100%;
 }
 
-/* 선택지 영역 */
+/* 보기 영역 */
 .quiz-options {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: clamp(10px, 3vw, 16px);
 }
 
-/* 공통 옵션 버튼 스타일 */
+/* 보기 버튼 – 터치 타깃 충분히 크게 */
 .option-button {
   transition: all 0.1s ease-in-out;
   display: flex;
   align-items: center;
-  padding: 16px 18px;
-  border-radius: 14px;
-  font-weight: 700;
-  font-size: 18px;
-  border: 2px solid black;
+  gap: clamp(10px, 3vw, 14px);
+  padding: clamp(14px, 3.8vw, 18px) clamp(16px, 4.2vw, 22px);
+  border-radius: clamp(12px, 3.6vw, 16px);
+  font-weight: 800;
+  font-size: clamp(16px, 4.8vw, 20px);
+  border: 2px solid #000;
   cursor: pointer;
   box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
   width: 100%;
+  min-height: clamp(52px, 13vw, 64px);   /* 손가락으로 누르기 좋게 */
   box-sizing: border-box;
-  gap: 12px;
 }
 
-/* 클릭 시 버튼 눌림 효과 */
 .option-button:active {
   transform: scale(0.97);
   box-shadow: none;
 }
 
-/* 보기별 배경 색상 */
+/* 보기 색상 톤(기존 유지) */
 .pink { background-color: #f7c3c3; }
 .lightyellow { background-color: #f8f6b2; }
 .lightblue { background-color: #b9c7ff; }
 .lightgreen { background-color: #c7f7c7; }
 
-/* 라디오 버튼 스타일 */
+/* 라디오 원형 */
 .radio-circle {
-  width: 18px;
-  height: 18px;
+  width: clamp(16px, 4.6vw, 20px);
+  height: clamp(16px, 4.6vw, 20px);
   border-radius: 50%;
-  border: 2px solid black;
-  background-color: white;
+  border: 2px solid #000;
+  background-color: #fff;
 }
 
-/* 선택지 텍스트 */
+/* 보기 텍스트 */
 .option-text {
-  font-weight: bold;
+  font-weight: 800;
+  line-height: 1.2;
 }
 
 /* 도움말 버튼 영역 */
 .help-button-container {
-  margin-top: 24px;
+  margin-top: clamp(16px, 4vw, 24px);
   text-align: right;
 }
 
-/* 도움말 버튼 스타일 */
+/* 도움말 버튼 */
 .btn-help {
   background-color: #f4cf48;
-  color: black;
-  font-weight: bold;
-  font-size: 16px;
-  padding: 10px 20px;
+  color: #000;
+  font-weight: 900;
+  font-size: clamp(14px, 4.2vw, 16px);
+  padding: clamp(8px, 2.6vw, 10px) clamp(14px, 3.4vw, 20px);
   border: none;
   border-radius: 12px;
   cursor: pointer;
@@ -120,72 +126,42 @@
   box-shadow: none;
 }
 
+/* ===== 추가 미세 조정 ===== */
+
+/* 큰 태블릿~PC에서 카드 폭 살짝 줄여 과도한 좌우여백 방지 */
+@media (min-width: 1024px) {
+  .quiz-card { max-width: 720px; }
+}
+
+/* 매우 작은 폰(≤360px)에서 여백 최소화 */
+@media (max-width: 360px) {
+  .quiz-container { padding: 12px; }
+  .quiz-card { padding: 16px; }
+}
+
 /* ----------- 태블릿 이하 (768px) ----------- */
 @media (max-width: 768px) {
-  .quiz-card {
-    width: 90%;
-    padding: 24px;
-  }
-
-  .quiz-title {
-    font-size: 20px;
-  }
-
-  .quiz-subtitle {
-    font-size: 16px;
-  }
-
   .quiz-image {
-    max-width: 240px;
-  }
-
-  .option-button {
-    padding: 14px 16px;
-    font-size: 16px;
-  }
-
-  .radio-circle {
-    width: 16px;
-    height: 16px;
-  }
-
-  .btn-help {
-    font-size: 14px;
-    padding: 8px 16px;
+    /* 태블릿에서 더 크게 (카드 폭의 70%) */
+    width: min(70vw, 400px);
   }
 }
 
 /* ----------- 모바일 이하 (480px) ----------- */
 @media (max-width: 480px) {
-  .quiz-card {
-    width: 100%;
-    padding: 20px;
-  }
-
-  .quiz-title {
-    font-size: 18px;
-  }
-
-  .quiz-subtitle {
-    font-size: 15px;
-  }
-
   .quiz-image {
-    max-width: 200px;
+    /* 모바일에서는 거의 꽉 차게 */
+    width: min(86vw, 420px);
   }
+}
 
-  .option-button {
-    padding: 12px 14px;
-    font-size: 15px;
-  }
-
-  .radio-circle {
-    width: 14px;
-    height: 14px;
-  }
-
-  .btn-help {
-    font-size: 13px;
-    padding: 6px 12px;
-  }
+/* 퀴즈 카드 안에서만 적용 (특이성↑) */
+.quiz-card img.quiz-image {
+  display: block;
+  margin: 16px auto 28px;
+  height: auto;
+  object-fit: contain;
+  /* 모바일에서 크게 */
+  width: min(86vw, 420px);
+  max-width: 100%;
 }
