@@ -47,7 +47,7 @@ export default function ScoreScreen() {
 
 
       {/* 다시하기 / 홈 / 설정 */}
-      <button className="retry-button" onClick={handleRetryClick}>다시하기</button>
+      {/* <button className="retry-button" onClick={handleRetryClick}>다시하기</button> */}
 
       <Link to="/" className="home-button"><span>홈</span></Link>
       <Link to="/settings" className="setting-button"><span>설정</span></Link>

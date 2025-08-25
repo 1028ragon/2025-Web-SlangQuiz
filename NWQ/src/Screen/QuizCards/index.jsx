@@ -72,7 +72,10 @@ export default function QuizCard({ quiz, onAnswer }) {
         </div>
 
         <div className="help-button-container">
-          <button className="btn-help" onClick={() => navigate('/help')}>
+          <button
+            className="btn-help"
+            onClick={() => navigate('/help', { state: { image_url: imgUrl } })}
+          >
             도움말
           </button>
         </div>

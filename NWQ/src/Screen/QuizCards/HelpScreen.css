@@ -142,3 +142,65 @@
     padding: 8px 16px;
   }
 }
+
+/* === 모바일에서 크게 보이도록 (≤ 540px) ========================== */
+@media (max-width: 540px) {
+  /* 카드 자체를 화면 가로에 넉넉히 채우기 */
+  .help-card {
+    width: 94vw;               /* 더 넓게 */
+    max-width: none;
+    padding: 28px 22px 34px;   /* 안쪽 여백 증가 */
+    border-radius: 22px;
+  }
+
+  /* 제목 크게 */
+  .help-title {
+    font-size: 34px;           /* 기존보다 확 키움 */
+    line-height: 1.2;
+    margin-bottom: 14px;
+    letter-spacing: -0.3px;
+  }
+
+  /* 퀴즈 이미지 크게 */
+  .help-image {
+    width: 88vw;               /* 카드 폭에 가깝게 */
+    max-height: 46vh;          /* 세로는 화면의 절반쯤까지만 */
+    margin: 8px auto 18px;
+    border-radius: 18px;
+    object-fit: contain;       /* 비율 유지 */
+    background: #f5f7fb;
+  }
+
+  /* 섹션 제목, 본문도 키우기 */
+  .section-title {
+    font-size: 22px;
+    margin-top: 18px;
+  }
+
+  .section-box {
+    font-size: 18px;
+    padding: 14px 16px;
+    border-radius: 16px;
+  }
+
+  /* 뒤로가기 버튼 터치 타깃 크게 */
+  .btn-back {
+    font-size: 20px;
+    padding: 14px 22px;
+    min-height: 54px;          /* 손가락 터치 여유 */
+    min-width: 180px;
+    border-radius: 16px;
+    box-shadow:
+      inset 0 4px 2px rgba(255,255,255,0.6),
+      0 6px 14px rgba(0,0,0,0.18);
+  }
+}
+
+/* 작은 폰(≤ 380px)에서 한 단계 더 타이트하게 조정 */
+@media (max-width: 380px) {
+  .help-title     { font-size: 30px; }
+  .section-title  { font-size: 20px; }
+  .section-box    { font-size: 17px; }
+  .btn-back       { font-size: 18px; min-height: 50px; }
+}
+
